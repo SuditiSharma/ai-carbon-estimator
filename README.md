@@ -9,15 +9,26 @@ by Dr. Venkatesh Kannan.
 
 ## Why I Built This
 
-One of the core challenges in sustainable AI research is that nobody 
-currently has a reliable way to connect computational resource usage 
-to environmental cost. A researcher running a Large Language Model 
-on a GPU cluster for 10 hours in India produces roughly 51 kg of CO₂ 
-— equivalent to driving 200 km. Yet this cost is invisible to funders 
-and institutions.
+Several tools already exist for estimating the carbon footprint 
+of computational workloads — CodeCarbon, Green Algorithms, 
+CarbonTracker. But most of them stop at measurement. 
 
-This API is a first-pass prototype exploring that question: can we 
-make the carbon cost of AI research transparent and queryable?
+What they don't do is connect that cost to research outcomes — 
+whether the computation actually led to useful findings, policy 
+change, or environmental benefit. That linkage is what this 
+project starts to explore.
+
+I built this as preliminary work before applying to the Decarb-AI 
+PhD programme at University of Galway (ICHEC), supervised by 
+Dr. Venkatesh Kannan. The prototype helped me understand the 
+problem hands-on — and, more importantly, helped me discover 
+where simple estimation breaks down.
+
+One thing I want to explore further is how HPC scheduler logs, 
+resource allocation records, and hardware utilisation telemetry 
+from real clusters like ICHEC could replace the estimated 
+multipliers I used here. That's a more honest and accurate 
+approach than lookup tables.
 
 ## What It Does
 
