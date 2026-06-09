@@ -76,6 +76,42 @@ Then open: http://127.0.0.1:8000/docs
 - Hardware energy values are estimates from published research
 - A more sophisticated version would pull live grid carbon data
 - Future work would integrate real ICHEC job telemetry data
+## Problems I Encountered
+
+**1. No dataset exists for this problem**
+Unlike my previous projects (Fraud Detection, Climate Risk), there 
+is no Kaggle dataset for AI carbon footprints. I had to build the 
+lookup table manually from published research — Strubell et al. 
+(2019) for hardware energy values and Ember Climate for national 
+carbon intensity figures. Deciding which sources to trust and how 
+to represent them was harder than I expected.
+
+**2. Defining meaningful thresholds**
+What makes a job "High" carbon vs "Medium"? There is no agreed 
+standard. I chose 1.0 kg and 10.0 kg as thresholds based on 
+published estimates of typical ML training runs, but these are 
+judgment calls. A more rigorous version would derive thresholds 
+from a real distribution of HPC job data.
+
+**3. Confidence was misleading at first**
+My first version returned "High" confidence for every result 
+regardless of input. That was dishonest — if a country isn't in 
+my dataset I'm using a global average, which is much less reliable. 
+I redesigned the confidence scoring to reflect actual data quality.
+
+**4. Model complexity multipliers are estimated**
+Mapping model types to complexity values (e.g. LLM = 8x, Neural 
+Network = 2.5x) required reading multiple papers and making 
+reasonable assumptions. These values are documented in 
+carbon_data.py with comments explaining the reasoning. A future 
+version would derive these empirically from real job telemetry.
+
+**5. National averages hide real variation**
+Carbon intensity varies by time of day and energy mix — a grid 
+running on wind at 2am is very different from the same grid at 
+peak demand. This prototype uses annual national averages because 
+live carbon intensity APIs require commercial subscriptions. This 
+is a known limitation, not an oversight.
 
 ## Author
 
