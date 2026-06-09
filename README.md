@@ -76,6 +76,31 @@ Then open: http://127.0.0.1:8000/docs
 - Hardware energy values are estimates from published research
 - A more sophisticated version would pull live grid carbon data
 - Future work would integrate real ICHEC job telemetry data
+
+## Design Decisions
+
+**Why use national averages instead of live grid data?**
+Live carbon intensity APIs (like Electricity Maps) require 
+commercial subscriptions and many HPC clusters do not expose 
+real-time grid information. This prototype prioritises 
+transparency and reproducibility over precision. A production 
+version would pull live data.
+
+**Why no trained ML model?**
+Unlike my Climate Risk and Fraud Detection APIs, this project 
+does not use a trained model — it uses documented calculations 
+from published research. This is intentional. The goal is 
+transparency: every number is traceable to a source. A black-box 
+model would undermine the accountability purpose of the tool.
+
+**Why three carbon labels instead of a continuous score?**
+Continuous scores (e.g. "this job is in the 67th percentile") 
+require a reference distribution of real HPC jobs — which I 
+don't have. Labels are a defensible starting point that 
+communicate meaning clearly to non-technical stakeholders, 
+which is central to the research governance problem this 
+project addresses.
+
 ## Problems I Encountered
 
 **1. No dataset exists for this problem**
@@ -112,6 +137,22 @@ running on wind at 2am is very different from the same grid at
 peak demand. This prototype uses annual national averages because 
 live carbon intensity APIs require commercial subscriptions. This 
 is a known limitation, not an oversight.
+
+## Future Research Questions
+
+These are the questions this prototype cannot answer but the 
+PhD would address:
+
+1. How do carbon costs vary within a single country by time 
+   of day and energy mix?
+2. Can real ICHEC job telemetry data replace these estimated 
+   multipliers?
+3. Is there a meaningful relationship between carbon cost and 
+   research output quality?
+4. How should research funders weight computational efficiency 
+   against research ambition?
+5. What governance frameworks would make researchers accountable 
+   for their computational footprint?
 
 ## Author
 
