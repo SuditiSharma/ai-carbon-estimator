@@ -41,18 +41,23 @@ def options():
 # Main prediction endpoint
 @app.post("/estimate", response_model=JobOutput)
 def estimate_carbon(job: JobInput):
-    
-    energy_kwh, carbon_kg, label, confidence, message = calculate_carbon(
+
+    (energy_kwh, carbon_kg, label, confidence,
+     confidence_reason, equivalent_km_driven,
+     equivalent_phone_charges, message) = calculate_carbon(
         model_type=job.model_type,
         hardware=job.hardware,
         duration_hours=job.duration_hours,
         country=job.country
     )
-    
+
     return JobOutput(
         energy_kwh=round(energy_kwh, 4),
         carbon_kg=round(carbon_kg, 4),
         carbon_label=label,
         confidence=confidence,
+        confidence_reason=confidence_reason,
+        equivalent_km_driven=equivalent_km_driven,
+        equivalent_phone_charges=equivalent_phone_charges,
         message=message
     )
