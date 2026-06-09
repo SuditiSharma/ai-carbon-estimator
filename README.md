@@ -154,6 +154,59 @@ PhD would address:
 5. What governance frameworks would make researchers accountable 
    for their computational footprint?
 
+## What I Got Wrong
+
+### My complexity multipliers were significantly off
+
+Before running any experiments, I assigned complexity multipliers
+based on general intuition and published estimates:
+
+| Model | My estimate | Measured reality |
+|---|---|---|
+| Linear Regression | 0.5x | 1.0x (baseline) |
+| Random Forest | 1.0x | 143.6x |
+| Neural Network | 2.5x | 127.0x |
+
+I assumed Neural Networks would be the most expensive and Random
+Forests somewhere in the middle. The experiment showed the opposite —
+Random Forest and Neural Network were comparable in runtime, and both
+were roughly 130x more expensive than Linear Regression, not 2-5x.
+
+This matters because my carbon estimates for Random Forest jobs are
+currently around 130x too low.
+
+### Why the gap exists
+
+Random Forests train hundreds of decision trees in parallel —
+on a 10,000 sample dataset with 100 trees, that's a lot of work.
+Linear Regression is a single matrix operation. The difference is
+much larger than I expected on real data.
+
+The Neural Network also threw a ConvergenceWarning — it did not
+fully converge in 50 iterations, meaning it stopped early. A fully
+trained neural network would likely take even longer.
+
+### What this means for the research
+
+Single lookup-table multipliers are too blunt an instrument.
+The actual compute cost depends heavily on:
+- Dataset size (I only tested 10,000 samples)
+- Number of trees / layers / parameters
+- Whether the model converged
+
+A more honest estimator would ask for these details rather than
+assuming a single number per model type. This is exactly the kind
+of finding that motivates more rigorous research — which is what
+the Decarb-AI PhD is designed to do.
+
+### What I would do differently
+
+Rather than hardcoded multipliers, a better approach would derive
+compute estimates from model parameters directly — number of trees,
+hidden layer sizes, training iterations — and validate against real
+measured job data from ICHEC. That is a core part of what this PhD
+proposes to build.
+
 ## Author
 
 Suditi Sharma
